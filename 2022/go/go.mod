@@ -1,3 +1,3 @@
-module aoc/2022/day01
+module aoc/2022
 
 go 1.19
