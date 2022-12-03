@@ -13,8 +13,8 @@ func (*Day1) Day() int {
 	return 1
 }
 
-func (*Day1) Run(input string) {
-	calories := createCaloriesList(input)
+func (puzzle *Day1) Run(input string) {
+	calories := puzzle.createCaloriesList(input)
 
 	if len(calories) < 3 {
 		panic(fmt.Sprintf("Not enough entries, expected at least 3, got only %d.", len(calories)))
@@ -26,7 +26,7 @@ func (*Day1) Run(input string) {
 	fmt.Printf("The total calories of the top three Elves is %d calories.\n", calories[0]+calories[1]+calories[2])
 }
 
-func createCaloriesList(input string) []int {
+func (*Day1) createCaloriesList(input string) []int {
 	lineNumber := -1
 	calories := []int{}
 	totalCurrentCalories := 0
