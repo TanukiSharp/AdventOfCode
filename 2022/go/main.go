@@ -11,7 +11,7 @@ type Puzzle interface {
 }
 
 func main() {
-	var puzzle Puzzle = &Day3{}
+	var puzzle Puzzle = &Day4{}
 
 	filename := fmt.Sprintf("../%02d.txt", puzzle.Day())
 
@@ -24,4 +24,18 @@ func main() {
 	input := (string)(bytes)
 
 	puzzle.Run(input)
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
