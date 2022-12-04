@@ -37,6 +37,6 @@ class Program
 
     private static void Main(string[] args)
     {
-        Run(new Day03());
+        Run(new Day4Namespace.Day4());
     }
 }
