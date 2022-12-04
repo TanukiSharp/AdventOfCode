@@ -1,5 +1,7 @@
 class Day01 : IPuzzle
 {
+    public int Day { get; } = 1;
+
     public void Run(string input)
     {
         List<int> calories = new();

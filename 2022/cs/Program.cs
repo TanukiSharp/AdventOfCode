@@ -2,13 +2,12 @@ using System.Text.RegularExpressions;
 
 public interface IPuzzle
 {
+    int Day { get; }
     void Run(string input);
 }
 
 class Program
 {
-    private static readonly Regex TypeNameRegex = new Regex(@"Day(\d{2})", RegexOptions.Compiled);
-
     private static string FindFile(string? basePath, string filename)
     {
         while (true)
@@ -25,27 +24,21 @@ class Program
         }
     }
 
-    private static string ReadInput<T>()
+    private static string ReadInput<T>(T puzzle) where T : IPuzzle
     {
-        Match m = TypeNameRegex.Match(typeof(T).Name);
-
-        if (m.Success == false)
-            throw new InvalidProgramException("You solution class name must start with 'Day' and be follow by 2 digits representing the day of the AoC problem.");
-
-        string dayNumberStr = m.Groups[1].Value;
-
-        string absoluteInputFilename = FindFile(AppContext.BaseDirectory, $"{dayNumberStr}.txt");
+        string filename = $"{puzzle.Day.ToString().PadLeft(2, '0')}.txt";
+        string absoluteInputFilename = FindFile(AppContext.BaseDirectory, filename);
 
         return File.ReadAllText(absoluteInputFilename);
     }
 
-    private static void Run<T>() where T : IPuzzle, new()
+    private static void Run<T>(T puzzle) where T : IPuzzle
     {
-        new T().Run(ReadInput<T>());
+        puzzle.Run(ReadInput<T>(puzzle));
     }
 
     private static void Main(string[] args)
     {
-        Run<Day01>();
+        Run(new Day03());
     }
 }
