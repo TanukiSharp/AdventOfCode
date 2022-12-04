@@ -1,4 +1,6 @@
-class Day01 : IPuzzle
+namespace Day1Namespace;
+
+class Day1 : IPuzzle
 {
     public int Day { get; } = 1;
 

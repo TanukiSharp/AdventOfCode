@@ -1,23 +1,25 @@
-class Day03 : IPuzzle
+namespace Day3Namespace;
+
+record struct Rucksack(IEnumerable<char> Compartment1, IEnumerable<char> Compartment2)
+{
+    public char FindDuplicateItem()
+    {
+        return Compartment1
+            .Intersect(Compartment2)
+            .Single();
+    }
+
+    public HashSet<char> GetUniqueItems()
+    {
+        return Compartment1
+            .Concat(Compartment2)
+            .ToHashSet();
+    }
+}
+
+class Day3 : IPuzzle
 {
     public int Day { get; } = 3;
-
-    private record struct Rucksack(IEnumerable<char> Compartment1, IEnumerable<char> Compartment2)
-    {
-        public char FindDuplicateItem()
-        {
-            return Compartment1
-                .Intersect(Compartment2)
-                .Single();
-        }
-
-        public HashSet<char> GetUniqueItems()
-        {
-            return Compartment1
-                .Concat(Compartment2)
-                .ToHashSet();
-        }
-    }
 
     public void Run(string input)
     {

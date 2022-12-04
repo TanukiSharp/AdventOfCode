@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 public interface IPuzzle
 {
     int Day { get; }
