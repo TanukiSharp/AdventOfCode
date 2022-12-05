@@ -11,7 +11,7 @@ type Puzzle interface {
 }
 
 func main() {
-	var puzzle Puzzle = &Day4{}
+	var puzzle Puzzle = &Day5{}
 
 	filename := fmt.Sprintf("../%02d.txt", puzzle.Day())
 
