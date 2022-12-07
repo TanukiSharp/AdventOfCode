@@ -11,6 +11,10 @@ func (*Day3) Day() int {
 	return 3
 }
 
+func (*Day3) IsTest() bool {
+	return false
+}
+
 func (puzzle *Day3) Run(input string) {
 	rucksacks := puzzle.createRucksackList(input)
 

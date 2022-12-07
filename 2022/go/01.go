@@ -13,6 +13,10 @@ func (*Day1) Day() int {
 	return 1
 }
 
+func (*Day1) IsTest() bool {
+	return false
+}
+
 func (puzzle *Day1) Run(input string) {
 	calories := puzzle.createCaloriesList(input)
 

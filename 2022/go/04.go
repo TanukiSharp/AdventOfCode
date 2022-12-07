@@ -12,6 +12,10 @@ func (*Day4) Day() int {
 	return 4
 }
 
+func (*Day4) IsTest() bool {
+	return false
+}
+
 func (puzzle *Day4) Run(input string) {
 	assignmentPairList := puzzle.createAssignmentPairList(input)
 

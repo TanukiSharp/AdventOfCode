@@ -18,6 +18,10 @@ func (*Day5) Day() int {
 	return 5
 }
 
+func (*Day5) IsTest() bool {
+	return false
+}
+
 func (puzzle *Day5) Run(input string) {
 	puzzle.parseInput(input)
 	puzzle.part1()

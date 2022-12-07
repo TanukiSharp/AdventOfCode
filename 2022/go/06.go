@@ -8,6 +8,10 @@ func (*Day6) Day() int {
 	return 6
 }
 
+func (*Day6) IsTest() bool {
+	return false
+}
+
 func (puzzle *Day6) Run(input string) {
 	fmt.Printf("Part1: %d\n", puzzle.findStartOfPacket(input, 4))
 	fmt.Printf("Part2: %d\n", puzzle.findStartOfPacket(input, 14))

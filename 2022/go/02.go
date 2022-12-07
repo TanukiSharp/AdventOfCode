@@ -39,6 +39,10 @@ func (*Day2) Day() int {
 	return 2
 }
 
+func (*Day2) IsTest() bool {
+	return false
+}
+
 func (puzzle *Day2) Run(input string) {
 	roundValues := puzzle.createRoundValuesList(input)
 
