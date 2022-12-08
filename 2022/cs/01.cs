@@ -2,7 +2,8 @@ namespace Day1Namespace;
 
 class Day1 : IPuzzle
 {
-    public int Day { get; } = 1;
+    public int Day => 1;
+    public bool IsTest => false;
 
     public void Run(string input)
     {

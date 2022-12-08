@@ -28,7 +28,8 @@ public record struct Range(int Start, int End)
 
 class Day4 : IPuzzle
 {
-    public int Day { get; } = 4;
+    public int Day => 4;
+    public bool IsTest => false;
 
     public void Run(string input)
     {

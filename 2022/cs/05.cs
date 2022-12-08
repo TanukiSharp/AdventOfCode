@@ -6,7 +6,8 @@ record struct Movement(int SourceStackIndex, int TargetStackIndex, int Quantity)
 
 class Day5 : IPuzzle
 {
-    public int Day { get; } = 5;
+    public int Day => 5;
+    public bool IsTest => false;
 
     private readonly List<Stack<char>> part1CrateStacks = new();
     private readonly List<Stack<char>> part2CrateStacks = new();

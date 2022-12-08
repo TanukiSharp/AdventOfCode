@@ -19,7 +19,8 @@ record struct Rucksack(IEnumerable<char> Compartment1, IEnumerable<char> Compart
 
 class Day3 : IPuzzle
 {
-    public int Day { get; } = 3;
+    public int Day => 3;
+    public bool IsTest => false;
 
     public void Run(string input)
     {

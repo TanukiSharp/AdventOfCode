@@ -168,7 +168,8 @@ class Day02 : IPuzzle
         Console.WriteLine($"My total score in part 2 is {totalScore}.");
     }
 
-    public int Day { get; } = 2;
+    public int Day => 2;
+    public bool IsTest => false;
 
     public void Run(string input)
     {

@@ -1,6 +1,7 @@
 public interface IPuzzle
 {
     int Day { get; }
+    bool IsTest { get; }
     void Run(string input);
 }
 
@@ -24,7 +25,7 @@ class Program
 
     private static string ReadInput<T>(T puzzle) where T : IPuzzle
     {
-        string filename = $"{puzzle.Day.ToString().PadLeft(2, '0')}.txt";
+        string filename = $"{puzzle.Day.ToString().PadLeft(2, '0')}{(puzzle.IsTest ? ".test" : string.Empty)}.txt";
         string absoluteInputFilename = FindFile(AppContext.BaseDirectory, filename);
 
         return File.ReadAllText(absoluteInputFilename);
