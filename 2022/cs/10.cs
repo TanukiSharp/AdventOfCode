@@ -28,13 +28,20 @@ class Day10 : IPuzzle
 
         foreach (int cycleToMonitor in CyclesToMonitor())
         {
-            while (cpu.Tick())
+            while (cpu.CycleStart())
             {
-                if (cpu.CycleNumber == cycleToMonitor)
+                try
                 {
-                    int signalStrength = cpu.CycleNumber * registers["X"];
-                    totalSignalStrength += signalStrength;
-                    break;
+                    if (cpu.CycleNumber == cycleToMonitor)
+                    {
+                        int signalStrength = cpu.CycleNumber * registers["X"];
+                        totalSignalStrength += signalStrength;
+                        break;
+                    }
+                }
+                finally
+                {
+                    cpu.CycleEnd();
                 }
             }
         }
@@ -57,8 +64,12 @@ class Day10 : IPuzzle
 
         while (cpu.CycleNumber < 240)
         {
-            cpu.Tick();
+            if (cpu.CycleStart() == false)
+                break;
+
             crt.Render(cpu.CycleNumber, registers["X"]);
+
+            cpu.CycleEnd();
         }
 
         Console.WriteLine("Part2:");
@@ -157,27 +168,20 @@ public class CPU
         this.registers = registers;
     }
 
-    public bool Tick()
+    public bool CycleStart()
     {
-        bool isRunning = true;
-
-        while (true)
-        {
-            if (pc >= instructions.Count)
-            {
-                isRunning = false;
-                break;
-            }
-
-            if (instructions[pc].Run(registers) == false)
-                break;
-
-            pc++;
-        }
+        if (pc >= instructions.Count)
+            return false;
 
         CycleNumber++;
 
-        return isRunning;
+        return true;
+    }
+
+    public void CycleEnd()
+    {
+        if (instructions[pc].End(registers))
+            pc++;
     }
 }
 
@@ -195,15 +199,15 @@ public abstract class InstructionBase
     {
     }
 
-    public bool Run(Dictionary<string, int> registers)
+    public bool End(Dictionary<string, int> registers)
     {
+        Counter++;
+
         if (Counter == CycleCount)
         {
             Done(registers);
             return true;
         }
-
-        Counter++;
 
         return false;
     }
