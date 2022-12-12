@@ -50,7 +50,7 @@ func constructFilename(puzzle Puzzle) string {
 }
 
 func main() {
-	var puzzle Puzzle = &Day8{}
+	var puzzle Puzzle = &Day11{}
 
 	pwd, err := os.Getwd()
 
