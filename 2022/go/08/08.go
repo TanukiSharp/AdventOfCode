@@ -1,34 +1,29 @@
-package main
+package day8
 
 import (
 	"fmt"
 	"strings"
 )
 
-type Day8 struct {
+type Puzzle struct {
 	treeMap [][]int8
 }
 
-func (*Day8) Day() int {
-	return 8
-}
+func (*Puzzle) Day() int     { return 8 }
+func (*Puzzle) IsTest() bool { return false }
 
-func (*Day8) IsTest() bool {
-	return false
-}
-
-func (puzzle *Day8) Run(input string) {
+func (puzzle *Puzzle) Run(input string) {
 	puzzle.parseInput(input)
 
 	puzzle.part1()
 	puzzle.part2()
 }
 
-func (puzzle *Day8) part1() {
+func (puzzle *Puzzle) part1() {
 	height := len(puzzle.treeMap)
 	width := len(puzzle.treeMap[0])
 
-	visibilityMap := puzzle.newSet()
+	visibilityMap := newSet()
 
 	for x := 0; x < width; x++ {
 		puzzle.scan(x, 0, height, 0, +1, visibilityMap)
@@ -43,7 +38,7 @@ func (puzzle *Day8) part1() {
 	fmt.Printf("Part1: %d\n", visibilityMap.size())
 }
 
-func (puzzle *Day8) part2() {
+func (puzzle *Puzzle) part2() {
 	bestViewingDistance := 0
 
 	height := len(puzzle.treeMap)
@@ -66,7 +61,7 @@ func (puzzle *Day8) part2() {
 	fmt.Printf("Part2: %d\n", bestViewingDistance)
 }
 
-func (puzzle *Day8) computeViewingDistance(x, y, width, height, dx, dy int) int {
+func (puzzle *Puzzle) computeViewingDistance(x, y, width, height, dx, dy int) int {
 	viewingDistance := 0
 	consideringTreeHeight := puzzle.treeMap[y][x]
 
@@ -89,7 +84,7 @@ func (puzzle *Day8) computeViewingDistance(x, y, width, height, dx, dy int) int 
 	return viewingDistance
 }
 
-func (puzzle *Day8) scan(startX, startY, count, dx, dy int, visibilityMap set) {
+func (puzzle *Puzzle) scan(startX, startY, count, dx, dy int, visibilityMap set) {
 	var largetTreeHeight int8 = -1
 
 	x := startX
@@ -110,7 +105,7 @@ func (puzzle *Day8) scan(startX, startY, count, dx, dy int, visibilityMap set) {
 	}
 }
 
-func (puzzle *Day8) parseInput(input string) {
+func (puzzle *Puzzle) parseInput(input string) {
 	treeMap := [][]int8{}
 
 	for _, line := range strings.Split(input, "\n") {
@@ -136,7 +131,7 @@ type set struct {
 	data map[string]struct{}
 }
 
-func (*Day8) newSet() set {
+func newSet() set {
 	return set{
 		data: map[string]struct{}{},
 	}

@@ -1,6 +1,7 @@
-package main
+package day5
 
 import (
+	"aoc/2022/shared"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -8,27 +9,22 @@ import (
 	"unicode"
 )
 
-type Day5 struct {
+type Puzzle struct {
 	stacks    []*stack
 	nStacks   []*nStack
 	movements []*movement
 }
 
-func (*Day5) Day() int {
-	return 5
-}
+func (*Puzzle) Day() int     { return 5 }
+func (*Puzzle) IsTest() bool { return false }
 
-func (*Day5) IsTest() bool {
-	return false
-}
-
-func (puzzle *Day5) Run(input string) {
+func (puzzle *Puzzle) Run(input string) {
 	puzzle.parseInput(input)
 	puzzle.part1()
 	puzzle.part2()
 }
 
-func (puzzle *Day5) part1() {
+func (puzzle *Puzzle) part1() {
 	for _, movement := range puzzle.movements {
 		for i := 0; i < movement.quantity; i++ {
 			c := puzzle.stacks[movement.fromIndex].pop()
@@ -45,7 +41,7 @@ func (puzzle *Day5) part1() {
 	fmt.Println()
 }
 
-func (puzzle *Day5) part2() {
+func (puzzle *Puzzle) part2() {
 	for _, movement := range puzzle.movements {
 		c := puzzle.nStacks[movement.fromIndex].pop(movement.quantity)
 		puzzle.nStacks[movement.toIndex].push(c)
@@ -60,7 +56,7 @@ func (puzzle *Day5) part2() {
 	fmt.Println()
 }
 
-func (puzzle *Day5) parseInput(input string) {
+func (puzzle *Puzzle) parseInput(input string) {
 	isParsingStacks := true
 
 	for _, line := range strings.Split(input, "\n") {
@@ -80,11 +76,11 @@ func (puzzle *Day5) parseInput(input string) {
 
 	for _, stack := range puzzle.stacks {
 		stack.isReversed = false
-		puzzle.nStacks = append(puzzle.nStacks, puzzle.cloneStackToNStack(stack))
+		puzzle.nStacks = append(puzzle.nStacks, cloneStackToNStack(stack))
 	}
 }
 
-func (puzzle *Day5) parseCrateLine(line string) {
+func (puzzle *Puzzle) parseCrateLine(line string) {
 	if strings.HasPrefix(line, " 1 ") {
 		return
 	}
@@ -103,7 +99,7 @@ func (puzzle *Day5) parseCrateLine(line string) {
 			puzzle.stacks[stackIndex].push(c)
 		}
 
-		runes = runes[Min(4, len(runes)):]
+		runes = runes[shared.Min(4, len(runes)):]
 		stackIndex++
 	}
 }
@@ -114,7 +110,7 @@ type movement struct {
 	toIndex   int
 }
 
-func (puzzle *Day5) parseMovement(line string) {
+func (puzzle *Puzzle) parseMovement(line string) {
 	regex, _ := regexp.Compile(`move (\d+) from (\d+) to (\d+)`)
 	matches := regex.FindSubmatch(([]byte)(line))
 
@@ -163,7 +159,7 @@ type nStack struct {
 	items []rune
 }
 
-func (*Day5) cloneStackToNStack(stack *stack) *nStack {
+func cloneStackToNStack(stack *stack) *nStack {
 	newArray := make([]rune, len(stack.items))
 
 	for i := 0; i < len(newArray); i++ {

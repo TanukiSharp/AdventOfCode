@@ -1,29 +1,25 @@
-package main
+package day4
 
 import (
+	"aoc/2022/shared"
 	"fmt"
 	"strconv"
 	"strings"
 )
 
-type Day4 struct{}
+type Puzzle struct{}
 
-func (*Day4) Day() int {
-	return 4
+func (*Puzzle) Day() int     { return 4 }
+func (*Puzzle) IsTest() bool { return false }
+
+func (*Puzzle) Run(input string) {
+	assignmentPairList := createAssignmentPairList(input)
+
+	part1(assignmentPairList)
+	part2(assignmentPairList)
 }
 
-func (*Day4) IsTest() bool {
-	return false
-}
-
-func (puzzle *Day4) Run(input string) {
-	assignmentPairList := puzzle.createAssignmentPairList(input)
-
-	puzzle.part1(assignmentPairList)
-	puzzle.part2(assignmentPairList)
-}
-
-func (puzzle *Day4) part1(assignmentPairList []pair) {
+func part1(assignmentPairList []pair) {
 	result := 0
 
 	for _, pair := range assignmentPairList {
@@ -35,7 +31,7 @@ func (puzzle *Day4) part1(assignmentPairList []pair) {
 	fmt.Printf("Part1: %d\n", result)
 }
 
-func (puzzle *Day4) part2(assignmentPairList []pair) {
+func part2(assignmentPairList []pair) {
 	result := 0
 
 	for _, pair := range assignmentPairList {
@@ -59,7 +55,7 @@ type pair struct {
 	rhs *assignment
 }
 
-func (*Day4) newAssignment(pair string) *assignment {
+func newAssignment(pair string) *assignment {
 	parts := strings.Split(strings.TrimSpace(pair), "-")
 
 	start, _ := strconv.Atoi(strings.TrimSpace(parts[0]))
@@ -76,13 +72,13 @@ func (a *assignment) isFullyContaining(b *assignment) bool {
 }
 
 func (a *assignment) isOverlapping(b *assignment) bool {
-	start := Max(a.start, b.start)
-	end := Min(a.end, b.end)
+	start := shared.Max(a.start, b.start)
+	end := shared.Min(a.end, b.end)
 
 	return start <= end
 }
 
-func (puzzle *Day4) createAssignmentPairList(input string) []pair {
+func createAssignmentPairList(input string) []pair {
 	pairs := []pair{}
 
 	for _, line := range strings.Split(input, "\n") {
@@ -95,8 +91,8 @@ func (puzzle *Day4) createAssignmentPairList(input string) []pair {
 		parts := strings.Split(line, ",")
 
 		pairs = append(pairs, pair{
-			lhs: puzzle.newAssignment(parts[0]),
-			rhs: puzzle.newAssignment(parts[1]),
+			lhs: newAssignment(parts[0]),
+			rhs: newAssignment(parts[1]),
 		})
 	}
 

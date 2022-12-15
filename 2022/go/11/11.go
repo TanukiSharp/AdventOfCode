@@ -1,4 +1,4 @@
-package main
+package day11
 
 import (
 	"fmt"
@@ -9,22 +9,22 @@ import (
 	"strings"
 )
 
-type Day11 struct {
+type Puzzle struct {
 	monkeysMap  map[int]*monkey
 	monkeysList []*monkey
 }
 
-func (*Day11) Day() int     { return 11 }
-func (*Day11) IsTest() bool { return true }
+func (*Puzzle) Day() int     { return 11 }
+func (*Puzzle) IsTest() bool { return true }
 
-func (puzzle *Day11) Run(input string) {
+func (puzzle *Puzzle) Run(input string) {
 	puzzle.parseInput(input)
 
 	puzzle.part1()
 	puzzle.part2()
 }
 
-func (puzzle *Day11) part1() {
+func (puzzle *Puzzle) part1() {
 	reliefFunc := func(worryLevel, _ int) int {
 		return (int)(math.Floor((float64)(worryLevel) / 3.0))
 	}
@@ -36,7 +36,7 @@ func (puzzle *Day11) part1() {
 	fmt.Printf("Part1: %d\n", puzzle.computeMonkeyBusiness())
 }
 
-func (puzzle *Day11) part2() {
+func (puzzle *Puzzle) part2() {
 	reliefFunc := func(worryLevel, divisibleBy int) int {
 		panic("Not implemented yet.")
 	}
@@ -55,7 +55,7 @@ func (puzzle *Day11) part2() {
 	fmt.Printf("Part2: %d\n", puzzle.computeMonkeyBusiness())
 }
 
-func (puzzle *Day11) computeMonkeyBusiness() int {
+func (puzzle *Puzzle) computeMonkeyBusiness() int {
 	inspectionCounts := []int{}
 
 	for _, monkey := range puzzle.monkeysList {
@@ -69,13 +69,13 @@ func (puzzle *Day11) computeMonkeyBusiness() int {
 	return inspectionCounts[0] * inspectionCounts[1]
 }
 
-func (puzzle *Day11) playOneRound(reliefFunc reliefFunc) {
+func (puzzle *Puzzle) playOneRound(reliefFunc reliefFunc) {
 	for _, monkey := range puzzle.monkeysList {
 		monkey.playTurn(reliefFunc)
 	}
 }
 
-func (puzzle *Day11) parseInput(input string) {
+func (puzzle *Puzzle) parseInput(input string) {
 	var currentMonkey *monkey
 
 	puzzle.monkeysMap = map[int]*monkey{}
@@ -90,22 +90,22 @@ func (puzzle *Day11) parseInput(input string) {
 		}
 
 		if strings.HasPrefix(line, "Monkey ") {
-			currentMonkey = puzzle.parseMonkey(line)
+			currentMonkey = parseMonkey(line)
 			puzzle.monkeysMap[currentMonkey.id] = currentMonkey
 			puzzle.monkeysList = append(puzzle.monkeysList, currentMonkey)
 		} else if strings.HasPrefix(line, "Starting items: ") {
-			puzzle.parseStartingItems(currentMonkey, line)
+			parseStartingItems(currentMonkey, line)
 		} else if strings.HasPrefix(line, "Operation: ") {
-			puzzle.parseOperation(currentMonkey, line)
+			parseOperation(currentMonkey, line)
 		} else if strings.HasPrefix(line, "Test: ") {
-			puzzle.parseTest(currentMonkey, line)
+			parseTest(currentMonkey, line)
 		} else if strings.HasPrefix(line, "If ") {
 			puzzle.parseTestAction(currentMonkey, line)
 		}
 	}
 }
 
-func (puzzle *Day11) parseMonkey(line string) *monkey {
+func parseMonkey(line string) *monkey {
 	regex, _ := regexp.Compile(`Monkey (\d+):`)
 
 	matches := regex.FindSubmatch(([]byte)(line))
@@ -118,7 +118,7 @@ func (puzzle *Day11) parseMonkey(line string) *monkey {
 	}
 }
 
-func (puzzle *Day11) parseStartingItems(currentMonkey *monkey, line string) {
+func parseStartingItems(currentMonkey *monkey, line string) {
 	listStr := strings.Split(line[16:], ", ")
 
 	for _, listItemStr := range listStr {
@@ -128,7 +128,7 @@ func (puzzle *Day11) parseStartingItems(currentMonkey *monkey, line string) {
 	}
 }
 
-func (puzzle *Day11) parseOperation(currentMonkey *monkey, line string) {
+func parseOperation(currentMonkey *monkey, line string) {
 	line = line[17:]
 
 	parts := strings.Split(line, " ")
@@ -144,7 +144,7 @@ func (puzzle *Day11) parseOperation(currentMonkey *monkey, line string) {
 	}
 }
 
-func (puzzle *Day11) parseTest(currentMonkey *monkey, line string) {
+func parseTest(currentMonkey *monkey, line string) {
 	line = line[6:]
 
 	regex, _ := regexp.Compile(`divisible by (\d+)`)
@@ -164,7 +164,7 @@ func (puzzle *Day11) parseTest(currentMonkey *monkey, line string) {
 	}
 }
 
-func (puzzle *Day11) parseTestAction(currentMonkey *monkey, line string) {
+func (puzzle *Puzzle) parseTestAction(currentMonkey *monkey, line string) {
 	regex, _ := regexp.Compile(`If (true|false): throw to monkey (\d+)`)
 
 	matches := regex.FindSubmatch(([]byte)(line))

@@ -1,4 +1,4 @@
-package main
+package day1
 
 import (
 	"fmt"
@@ -7,18 +7,13 @@ import (
 	"strings"
 )
 
-type Day1 struct{}
+type Puzzle struct{}
 
-func (*Day1) Day() int {
-	return 1
-}
+func (*Puzzle) Day() int     { return 1 }
+func (*Puzzle) IsTest() bool { return false }
 
-func (*Day1) IsTest() bool {
-	return false
-}
-
-func (puzzle *Day1) Run(input string) {
-	calories := puzzle.createCaloriesList(input)
+func (*Puzzle) Run(input string) {
+	calories := createCaloriesList(input)
 
 	if len(calories) < 3 {
 		panic(fmt.Sprintf("Not enough entries, expected at least 3, got only %d.", len(calories)))
@@ -26,11 +21,11 @@ func (puzzle *Day1) Run(input string) {
 
 	sort.Slice(calories, func(i1, i2 int) bool { return calories[i1] > calories[i2] })
 
-	fmt.Printf("The Elf with the most calories has %d calories.\n", calories[0])
-	fmt.Printf("The total calories of the top three Elves is %d calories.\n", calories[0]+calories[1]+calories[2])
+	fmt.Printf("Part1: %d\n", calories[0])
+	fmt.Printf("Part2: %d\n", calories[0]+calories[1]+calories[2])
 }
 
-func (*Day1) createCaloriesList(input string) []int {
+func createCaloriesList(input string) []int {
 	lineNumber := -1
 	calories := []int{}
 	totalCurrentCalories := 0

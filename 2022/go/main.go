@@ -4,7 +4,23 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	// day1 "aoc/2022/01"
+	// day2 "aoc/2022/02"
+	// day3 "aoc/2022/03"
+	// day4 "aoc/2022/04"
+	// day5 "aoc/2022/05"
+	// day6 "aoc/2022/06"
+	// day7 "aoc/2022/07"
+	// day8 "aoc/2022/08"
+	// day11 "aoc/2022/11"
+	// day13 "aoc/2022/13"
+	day14 "aoc/2022/14"
 )
+
+var puzzle Puzzle = &day14.Puzzle{}
+
+// -------------------------------------------
 
 type Puzzle interface {
 	IsTest() bool
@@ -50,8 +66,6 @@ func constructFilename(puzzle Puzzle) string {
 }
 
 func main() {
-	var puzzle Puzzle = &Day11{}
-
 	pwd, err := os.Getwd()
 
 	if err != nil {
@@ -68,19 +82,6 @@ func main() {
 
 	input := (string)(bytes)
 
+	fmt.Printf("--- Day %d ---\n", puzzle.Day())
 	puzzle.Run(input)
-}
-
-func Max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func Min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

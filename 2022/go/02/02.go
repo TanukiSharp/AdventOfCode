@@ -1,12 +1,11 @@
-package main
+package day2
 
 import (
 	"fmt"
 	"strings"
 )
 
-type Day2 struct {
-}
+type Puzzle struct{}
 
 type roundValues struct {
 	opponent string
@@ -35,22 +34,17 @@ const (
 	winScore  = 6
 )
 
-func (*Day2) Day() int {
-	return 2
+func (*Puzzle) Day() int     { return 2 }
+func (*Puzzle) IsTest() bool { return false }
+
+func (*Puzzle) Run(input string) {
+	roundValues := createRoundValuesList(input)
+
+	part1(roundValues)
+	part2(roundValues)
 }
 
-func (*Day2) IsTest() bool {
-	return false
-}
-
-func (puzzle *Day2) Run(input string) {
-	roundValues := puzzle.createRoundValuesList(input)
-
-	puzzle.part1(roundValues)
-	puzzle.part2(roundValues)
-}
-
-func (*Day2) getWinner(opponent, me handShape) handShape {
+func getWinner(opponent, me handShape) handShape {
 	if opponent == me {
 		return drawHand
 	}
@@ -64,7 +58,7 @@ func (*Day2) getWinner(opponent, me handShape) handShape {
 	return opponent
 }
 
-func (*Day2) getWinHandShape(opponent handShape) handShape {
+func getWinHandShape(opponent handShape) handShape {
 	if opponent == rockHand {
 		return paperHand
 	} else if opponent == paperHand {
@@ -73,7 +67,7 @@ func (*Day2) getWinHandShape(opponent handShape) handShape {
 	return rockHand
 }
 
-func (*Day2) getLoseHandShape(opponent handShape) handShape {
+func getLoseHandShape(opponent handShape) handShape {
 	if opponent == rockHand {
 		return scissorsHand
 	} else if opponent == paperHand {
@@ -82,7 +76,7 @@ func (*Day2) getLoseHandShape(opponent handShape) handShape {
 	return paperHand
 }
 
-func (*Day2) convertHandShape(character string) handShape {
+func convertHandShape(character string) handShape {
 	if character == "A" || character == "X" {
 		return rockHand
 	} else if character == "B" || character == "Y" {
@@ -94,7 +88,7 @@ func (*Day2) convertHandShape(character string) handShape {
 	panic(fmt.Sprintf("Invalid round character %q", character))
 }
 
-func (*Day2) convertStrategy(character string) strategy {
+func convertStrategy(character string) strategy {
 	if character == "X" {
 		return loseStrategy
 	} else if character == "Y" {
@@ -106,20 +100,20 @@ func (*Day2) convertStrategy(character string) strategy {
 	panic(fmt.Sprintf("Invalid round character %q", character))
 }
 
-func (puzzle *Day2) getHandShapeFromStrategy(opponent handShape, strategy strategy) handShape {
+func getHandShapeFromStrategy(opponent handShape, strategy strategy) handShape {
 	if strategy == winStrategy {
-		return puzzle.getWinHandShape(opponent)
+		return getWinHandShape(opponent)
 	} else if strategy == drawStrategy {
 		return opponent
 	} else if strategy == loseStrategy {
-		return puzzle.getLoseHandShape(opponent)
+		return getLoseHandShape(opponent)
 	}
 
 	panic(fmt.Sprintf("Unknown strategy %v", strategy))
 }
 
-func (puzzle *Day2) getRoundScore(opponent, me handShape) int {
-	winner := puzzle.getWinner(opponent, me)
+func getRoundScore(opponent, me handShape) int {
+	winner := getWinner(opponent, me)
 
 	if opponent == me {
 		return drawScore
@@ -130,38 +124,44 @@ func (puzzle *Day2) getRoundScore(opponent, me handShape) int {
 	}
 }
 
-func (puzzle *Day2) part1(roundValues []roundValues) {
+func part1(roundValues []roundValues) {
 	score := 0
 
 	for _, roundValue := range roundValues {
-		opponent := puzzle.convertHandShape(roundValue.opponent)
-		me := puzzle.convertHandShape(roundValue.me)
+		opponent := convertHandShape(roundValue.opponent)
+		me := convertHandShape(roundValue.me)
 
-		score += puzzle.getRoundScore(opponent, me) + (int)(me)
+		score += getRoundScore(opponent, me) + (int)(me)
 	}
 
 	fmt.Printf("Part1: score is %d\n", score)
 }
 
-func (puzzle *Day2) part2(roundValues []roundValues) {
+func part2(roundValues []roundValues) {
 	score := 0
 
 	for _, roundValue := range roundValues {
-		opponent := puzzle.convertHandShape(roundValue.opponent)
-		strategy := puzzle.convertStrategy(roundValue.me)
-		me := puzzle.getHandShapeFromStrategy(opponent, strategy)
+		opponent := convertHandShape(roundValue.opponent)
+		strategy := convertStrategy(roundValue.me)
+		me := getHandShapeFromStrategy(opponent, strategy)
 
-		score += puzzle.getRoundScore(opponent, me) + (int)(me)
+		score += getRoundScore(opponent, me) + (int)(me)
 	}
 
 	fmt.Printf("Part2: score is %d\n", score)
 }
 
-func (*Day2) createRoundValuesList(input string) []roundValues {
+func createRoundValuesList(input string) []roundValues {
 	result := []roundValues{}
 
 	for _, line := range strings.Split(input, "\n") {
-		parts := strings.Split(strings.TrimSpace(line), " ")
+		line = strings.TrimSpace(line)
+
+		if len(line) == 0 {
+			continue
+		}
+
+		parts := strings.Split(line, " ")
 		result = append(result, roundValues{opponent: parts[0], me: parts[1]})
 	}
 

@@ -1,4 +1,4 @@
-package main
+package day7
 
 import (
 	"fmt"
@@ -6,20 +6,15 @@ import (
 	"strings"
 )
 
-type Day7 struct {
+type Puzzle struct {
 	root *directory
 	cwd  *directory
 }
 
-func (*Day7) Day() int {
-	return 7
-}
+func (*Puzzle) Day() int     { return 7 }
+func (*Puzzle) IsTest() bool { return false }
 
-func (*Day7) IsTest() bool {
-	return false
-}
-
-func (puzzle *Day7) Run(input string) {
+func (puzzle *Puzzle) Run(input string) {
 	for _, line := range strings.Split(input, "\n") {
 		line = strings.TrimSpace(line)
 
@@ -35,7 +30,7 @@ func (puzzle *Day7) Run(input string) {
 
 const printIndentSize = 2
 
-func (puzzle *Day7) part1() {
+func (puzzle *Puzzle) part1() {
 	total := 0
 
 	puzzle.part1Core(puzzle.root, &total, 100000)
@@ -43,7 +38,7 @@ func (puzzle *Day7) part1() {
 	fmt.Printf("Part1: %d\n", total)
 }
 
-func (puzzle *Day7) part1Core(dir *directory, total *int, threshold int) {
+func (puzzle *Puzzle) part1Core(dir *directory, total *int, threshold int) {
 	if dir.totalSize <= threshold {
 		*total += dir.totalSize
 	}
@@ -53,7 +48,7 @@ func (puzzle *Day7) part1Core(dir *directory, total *int, threshold int) {
 	}
 }
 
-func (puzzle *Day7) part2() {
+func (puzzle *Puzzle) part2() {
 	const maxSize = 70_000_000
 	const neededForUpdate = 30_000_000
 
@@ -66,7 +61,7 @@ func (puzzle *Day7) part2() {
 	fmt.Printf("Part2: %d\n", bestDirectory.totalSize)
 }
 
-func (puzzle *Day7) findDirectory(best **directory, current *directory, size int) {
+func (puzzle *Puzzle) findDirectory(best **directory, current *directory, size int) {
 	for _, dir := range current.directories {
 		if dir.totalSize >= size && dir.totalSize < (*best).totalSize {
 			*best = dir
@@ -75,39 +70,39 @@ func (puzzle *Day7) findDirectory(best **directory, current *directory, size int
 	}
 }
 
-func (puzzle *Day7) print() {
+func (puzzle *Puzzle) print() {
 	puzzle.root.print(0)
 }
 
-func (puzzle *Day7) parseCommand(line string) {
+func (puzzle *Puzzle) parseCommand(line string) {
 	if strings.HasPrefix(line, "cd ") {
 		dir := line[3:]
 		if strings.HasPrefix(dir, "/") {
-			puzzle.root = puzzle.newDirectory("/", nil)
+			puzzle.root = newDirectory("/", nil)
 			puzzle.cwd = puzzle.root
 		} else if dir == ".." {
 			puzzle.cwd = puzzle.cwd.parent
 		} else {
-			puzzle.cwd = puzzle.cwd.ensureSubDirectory(puzzle, dir)
+			puzzle.cwd = puzzle.cwd.ensureSubDirectory(dir)
 		}
 	}
 
 	// Nothing to do on 'ls', just wait for comming lines.
 }
 
-func (puzzle *Day7) parseFsEntry(line string) {
+func (puzzle *Puzzle) parseFsEntry(line string) {
 	if strings.HasPrefix(line, "dir ") {
 		name := line[4:]
-		puzzle.cwd.ensureSubDirectory(puzzle, name)
+		puzzle.cwd.ensureSubDirectory(name)
 	} else {
 		parts := strings.Split(line, " ")
 		size, _ := strconv.Atoi(parts[0])
 		name := parts[1]
-		puzzle.cwd.addFile(puzzle, name, size)
+		puzzle.cwd.addFile(name, size)
 	}
 }
 
-func (puzzle *Day7) parseLine(line string) {
+func (puzzle *Puzzle) parseLine(line string) {
 	if strings.HasPrefix(line, "$ ") {
 		puzzle.parseCommand(line[2:])
 	} else {
@@ -138,7 +133,7 @@ type directory struct {
 	_ struct{}
 }
 
-func (*Day7) newDirectory(name string, parent *directory) *directory {
+func newDirectory(name string, parent *directory) *directory {
 	return &directory{
 		name:        name,
 		parent:      parent,
@@ -147,14 +142,14 @@ func (*Day7) newDirectory(name string, parent *directory) *directory {
 	}
 }
 
-func (parent *directory) ensureSubDirectory(puzzle *Day7, name string) *directory {
+func (parent *directory) ensureSubDirectory(name string) *directory {
 	for _, existing := range parent.directories {
 		if existing.name == name {
 			return existing
 		}
 	}
 
-	new := puzzle.newDirectory(name, parent)
+	new := newDirectory(name, parent)
 	parent.directories = append(parent.directories, new)
 
 	return new
@@ -167,7 +162,7 @@ func (dir *directory) updateTotalSize(deltaSize int) {
 	}
 }
 
-func (dir *directory) addFile(puzzle *Day7, name string, size int) {
+func (dir *directory) addFile(name string, size int) {
 	file := &file{
 		name:      name,
 		size:      size,
