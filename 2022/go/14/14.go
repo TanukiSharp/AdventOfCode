@@ -62,8 +62,6 @@ func runPart1(show bool, rocks rockTraces) int {
 			print(rocks, sands)
 			fmt.Printf("count: %d\n", count)
 			fmt.Print("") // For breakpoint.
-			osef := 0
-			fmt.Scanln(&osef)
 		}
 	}
 
