@@ -16,10 +16,11 @@ import (
 	// day11 "aoc/2022/11"
 	// day13 "aoc/2022/13"
 	// day14 "aoc/2022/14"
-	day15 "aoc/2022/15"
+	// day15 "aoc/2022/15"
+	day17 "aoc/2022/17"
 )
 
-var puzzle Puzzle = &day15.Puzzle{}
+var puzzle Puzzle = &day17.Puzzle{}
 
 // -------------------------------------------
 

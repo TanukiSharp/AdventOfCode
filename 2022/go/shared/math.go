@@ -1,20 +1,24 @@
 package shared
 
-func Max(a, b int) int {
+type OrderedNumber interface {
+	int | int8 | int16 | int32 | int64 | float32 | float64
+}
+
+func Max[T OrderedNumber](a, b T) T {
 	if a > b {
 		return a
 	}
 	return b
 }
 
-func Min(a, b int) int {
+func Min[T OrderedNumber](a, b T) T {
 	if a < b {
 		return a
 	}
 	return b
 }
 
-func Sign(value int) int {
+func Sign[T OrderedNumber](value T) T {
 	if value > 0 {
 		return +1
 	}
@@ -24,7 +28,7 @@ func Sign(value int) int {
 	return 0
 }
 
-func Abs(value int) int {
+func Abs[T OrderedNumber](value T) T {
 	if value < 0 {
 		return -value
 	}
