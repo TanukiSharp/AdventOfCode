@@ -14,5 +14,6 @@ replace aoc/2022/day11 v0.0.0 => ./11
 replace aoc/2022/day13 v0.0.0 => ./13
 replace aoc/2022/day14 v0.0.0 => ./14
 replace aoc/2022/day15 v0.0.0 => ./15
+replace aoc/2022/day16 v0.0.0 => ./16
 replace aoc/2022/day17 v0.0.0 => ./17
 replace aoc/2022/shared v0.0.0 => ./shared

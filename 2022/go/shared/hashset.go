@@ -23,6 +23,10 @@ func (h HashSet[T]) Contains(value T) bool {
 	return ok
 }
 
-func (h HashSet[T]) size() int {
+func (h HashSet[T]) Size() int {
 	return len(h)
+}
+
+func (h HashSet[T]) Remove(value T) {
+	delete(h, value)
 }
